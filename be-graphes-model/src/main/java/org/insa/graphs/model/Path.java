@@ -36,6 +36,13 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
+        for (int i=0; i<nodes.length(); i++){
+            for (int j=0; j<nodes.get(i).getSuccessors().length(); i++){
+                if arcs.get(j).getMinimumTravelTime()>nodes.get(i).getSuccessors().get(j).getMinimumTravelTime() {
+                    arcs.get(j)=nodes.get(i).getSuccessors().get(j) ;
+                }
+            }
+        }
         return new Path(graph, arcs);
     }
 
@@ -49,7 +56,8 @@ public class Path {
      * @return A path that goes through the given list of nodes.
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
-     *         consecutive nodes in the list are not connected in the graph.
+     *                                  consecutive nodes in the list are not
+     *                                  connected in the graph.
      * 
      * @deprecated Need to be implemented.
      */
@@ -68,8 +76,9 @@ public class Path {
      * @return Concatenated path.
      * 
      * @throws IllegalArgumentException if the paths cannot be concatenated (IDs of
-     *         map do not match, or the end of a path is not the beginning of the
-     *         next).
+     *                                  map do not match, or the end of a path is
+     *                                  not the beginning of the
+     *                                  next).
      */
     public static Path concatenate(Path... paths) throws IllegalArgumentException {
         if (paths.length == 0) {
@@ -83,7 +92,7 @@ public class Path {
             }
         }
         ArrayList<Arc> arcs = new ArrayList<>();
-        for (Path path: paths) {
+        for (Path path : paths) {
             arcs.addAll(path.getArcs());
         }
         Path path = new Path(paths[0].getGraph(), arcs);
@@ -118,7 +127,7 @@ public class Path {
      * Create a new path containing a single node.
      * 
      * @param graph Graph containing the path.
-     * @param node Single node of the path.
+     * @param node  Single node of the path.
      */
     public Path(Graph graph, Node node) {
         this.graph = graph;
@@ -130,7 +139,7 @@ public class Path {
      * Create a new path with the given list of arcs.
      * 
      * @param graph Graph containing the path.
-     * @param arcs Arcs to construct the path.
+     * @param arcs  Arcs to construct the path.
      */
     public Path(Graph graph, List<Arc> arcs) {
         this.graph = graph;
@@ -201,24 +210,23 @@ public class Path {
      */
     public boolean isValid() {
         if (this.isEmpty()) {
-            return true ;
+            return true;
         }
-        if (this.size()==1) {
-            return true ;
+        if (this.size() == 1) {
+            return true;
         }
-        for (int i=0 ; i<arcs.size(); i++) {
-            if (i==0) {
-                if (arcs.get(i).getOrigin()!=this.getOrigin()){
-                    return false ;
+        for (int i = 0; i < arcs.size(); i++) {
+            if (i == 0) {
+                if (arcs.get(i).getOrigin() != this.getOrigin()) {
+                    return false;
+                }
+            } else {
+                if (arcs.get(i).getOrigin() != arcs.get(i - 1).getDestination()) {
+                    return false;
                 }
             }
-            else {
-            if (arcs.get(i).getOrigin()!=arcs.get(i-1).getDestination()){ 
-                return false ;
-            }
-            }
         }
-        return true ;
+        return true;
     }
 
     /**
@@ -229,10 +237,10 @@ public class Path {
      */
     public float getLength() {
         // TODO ;
-    float length = 0 ;
-    for (int i=0; i<arcs.size(); i++){
-        length+=arcs.get(i).getLength() ;
-    }
+        float length = 0;
+        for (int i = 0; i < arcs.size(); i++) {
+            length += arcs.get(i).getLength();
+        }
         return length;
     }
 
@@ -247,11 +255,11 @@ public class Path {
      */
     public double getTravelTime(double speed) {
         // TODO:
-        double time = 0.0 ;
-        for (int i=0; i<arcs.size(); i++){
-            time+=arcs.get(i).getTravelTime(speed) ;
+        double time = 0.0;
+        for (int i = 0; i < arcs.size(); i++) {
+            time += arcs.get(i).getTravelTime(speed);
         }
-        return time ;
+        return time;
     }
 
     /**
@@ -262,10 +270,10 @@ public class Path {
      * 
      */
     public double getMinimumTravelTime() {
-        double time = 0.0 ;
-        for (int i=0; i<arcs.size() ; i++){
-            time+=arcs.get(i).getMinimumTravelTime() ;
+        double time = 0.0;
+        for (int i = 0; i < arcs.size(); i++) {
+            time += arcs.get(i).getMinimumTravelTime();
         }
-        return time ;
+        return time;
     }
 }
