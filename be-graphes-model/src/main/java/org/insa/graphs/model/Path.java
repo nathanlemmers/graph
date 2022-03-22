@@ -198,11 +198,27 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        if (this.isEmpty()) {
+            return true ;
+        }
+        if (this.size()==1) {
+            return true ;
+        }
+        for (int i=0 ; i<arcs.size(); i++) {
+            if (i==0) {
+                if (arcs.get(i).getOrigin()!=this.getOrigin()){
+                    return false ;
+                }
+            }
+            else {
+            if (arcs.get(i).getOrigin()!=arcs.get(i-1).getDestination()){ 
+                return false ;
+            }
+            }
+        }
+        return true ;
     }
 
     /**
@@ -210,11 +226,14 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        // TODO ;
+    float length = 0 ;
+    for (int i=0; i<arcs.size(); i++){
+        length+=arcs.get(i).getLength() ;
+    }
+        return length;
     }
 
     /**
@@ -225,11 +244,14 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
         // TODO:
-        return 0;
+        double time = 0.0 ;
+        for (int i=0; i<arcs.size(); i++){
+            time+=arcs.get(i).getTravelTime(speed) ;
+        }
+        return time ;
     }
 
     /**
@@ -238,11 +260,12 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        double time = 0.0 ;
+        for (int i=0; i<arcs.size() ; i++){
+            time+=arcs.get(i).getMinimumTravelTime() ;
+        }
+        return time ;
     }
-
 }
