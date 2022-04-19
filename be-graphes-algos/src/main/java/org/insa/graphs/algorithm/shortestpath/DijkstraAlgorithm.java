@@ -47,21 +47,22 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Arc a;
         while (!Labeldest.getMarque() && !tas.isEmpty()) {
             min = tas.findMin();
-            index = tabLabel.indexOf(min);
+            index = min.getId();
             tabLabel.get(index).setMarque(true);
-            notifyNodeMarked(tabNode.get(tabLabel.indexOf(min)));
+            notifyNodeMarked(tabNode.get(index));
             for (int i = 0; i < tabNode.get(index).getSuccessors().size(); i++) {
                 successeur = tabLabel.get(tabNode.indexOf(tabNode.get(index).getSuccessors().get(i).getDestination()));
                 a = tabNode.get(index).getSuccessors().get(i);
                 if (!successeur.getMarque() && data.isAllowed(a)) {
                     if (successeur.getCost() > data.getCost(a) + min.getCost()) {
-                        if (Float.isInfinite(successeur.getCost())) {
-                            tas.insert(successeur);
-                            notifyNodeMarked(a.getDestination());
+                        if (!Float.isInfinite(successeur.getCost())) {
+                            tas.remove(successeur);
+                        } else {
+                            notifyNodeReached(a.getDestination());
                         }
                         successeur.setCost((float) data.getCost(a) + min.getCost());
                         successeur.setPere(a);
-
+                        tas.insert(successeur);
                     }
                 }
             }
@@ -79,6 +80,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
         }
         return solution;
+    }
+
+    public ShortestPathSolution getRun() {
+        return this.doRun();
     }
 
 }
