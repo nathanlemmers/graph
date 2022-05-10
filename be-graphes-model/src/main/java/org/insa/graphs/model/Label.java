@@ -46,8 +46,12 @@ public class Label implements Comparable<Label> {
         this.ok = b;
     }
 
+    public float getTotalCost() {
+        return cost;
+    }
+
     public int compareTo(Label autre) {
-        float res = this.cost - autre.cost;
+        float res = this.getTotalCost() - autre.getTotalCost();
         if (res < 0) {
             return -1;
         } else if (res == 0) {

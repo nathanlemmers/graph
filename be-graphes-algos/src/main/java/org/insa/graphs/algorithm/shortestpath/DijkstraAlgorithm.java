@@ -19,18 +19,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         super(data);
     }
 
-    @Override
-    protected ShortestPathSolution doRun() {
-        final ShortestPathData data = getInputData();
-        BinaryHeap<Label> tas = new BinaryHeap<Label>();
-        List<Arc> chemin = new ArrayList<Arc>();
-        ShortestPathSolution solution = null;
-        Graph graph = data.getGraph();
-        final int nbNodes = graph.size();
-        List<Node> tabNode = graph.getNodes();
-        Node fin = data.getDestination();
-        List<Label> tabLabel = new ArrayList<Label>();
-        Node depart = data.getOrigin();
+    protected final ShortestPathData data = getInputData();
+    protected BinaryHeap<Label> tas = new BinaryHeap<Label>();
+    protected List<Arc> chemin = new ArrayList<Arc>();
+    protected ShortestPathSolution solution = null;
+    protected Graph graph = data.getGraph();
+    protected final int nbNodes = graph.size();
+    protected List<Node> tabNode = graph.getNodes();
+    protected Node fin = data.getDestination();
+    protected List<Label> tabLabel = new ArrayList<Label>();
+    protected Node depart = data.getOrigin();
+
+    protected void init() {
         for (int i = 0; i < nbNodes; i++) {
             if (tabNode.get(i).compareTo(depart) == 0) {
                 tabLabel.add(new Label(i, true, 0, null));
@@ -39,6 +39,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 tabLabel.add(new Label(i, false, Float.POSITIVE_INFINITY, null));
             }
         }
+    }
+
+    @Override
+    protected ShortestPathSolution doRun() {
+        init();
         notifyOriginProcessed(depart);
         Label Labeldest = tabLabel.get(tabNode.indexOf(fin));
         Label min;
