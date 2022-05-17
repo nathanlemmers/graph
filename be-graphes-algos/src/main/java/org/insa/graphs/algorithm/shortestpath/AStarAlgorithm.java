@@ -15,6 +15,7 @@ import org.insa.graphs.model.Path;
 import org.insa.graphs.model.Label;
 import org.insa.graphs.model.LabelStar;
 import java.lang.Math;
+import java.sql.Time;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
@@ -29,14 +30,27 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
     @Override
     protected void init() {
-
+        if (graph.getGraphInformation().getMaximumSpeed() > 0) {
+            int t = graph.getGraphInformation().getMaximumSpeed();
+        } else {
+            int t = 55;
+        }
         for (int i = 0; i < nbNodes; i++) {
             if (tabNode.get(i).compareTo(depart) == 0) {
-                tabLabel.add(new LabelStar(i, true, 0, null, this.getVol(tabNode.get(i), fin)));
+                if (data.getMode() == Mode.TIME) {
+                    tabLabel.add(new LabelStar(i, true, 0, null, (this.getVol(tabNode.get(i), fin) / 2)));
+                } else {
+                    tabLabel.add(new LabelStar(i, true, 0, null, this.getVol(tabNode.get(i), fin)));
+                }
                 tas.insert(tabLabel.get(i));
             } else {
-                tabLabel.add(new LabelStar(i, false, Float.POSITIVE_INFINITY, null, this.getVol(tabNode.get(i), fin)));
-
+                if (data.getMode() == Mode.TIME) {
+                    tabLabel.add(new LabelStar(i, false, Float.POSITIVE_INFINITY, null,
+                            (this.getVol(tabNode.get(i), fin) / 2)));
+                } else {
+                    tabLabel.add(
+                            new LabelStar(i, false, Float.POSITIVE_INFINITY, null, this.getVol(tabNode.get(i), fin)));
+                }
             }
         }
     }

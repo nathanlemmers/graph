@@ -67,26 +67,28 @@ public class Launch {
 
         // test1 ;
         boolean result = true;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
             Node node1 = graph.get((int) (Math.random() * 150 + 50));
             Node node2 = graph.get((int) (Math.random() * 150 + 50));
             ShortestPathData data = new ShortestPathData(graph, node1, node2,
                     ArcInspectorFactory.getAllFilters().get(4));
             DijkstraAlgorithm algo = new DijkstraAlgorithm(data);
             BellmanFordAlgorithm algoB = new BellmanFordAlgorithm(data);
-            AStarAlgorithm algoC = new AStarAlgorithm(data);
             ShortestPathSolution dij;
             ShortestPathSolution Bel;
-            ShortestPathSolution AStar;
             try {
                 dij = algo.run();
                 Bel = algoB.run();
-                AStar = algoC.run();
-                if (AStar.getStatus() == Status.INFEASIBLE && Bel.getStatus() != Status.INFEASIBLE) {
+                if (dij.getStatus() == Status.INFEASIBLE && Bel.getStatus() != Status.INFEASIBLE) {
                     result = false;
                     break;
-                } else if (dij.getPath().getLength() != dij.getPath().getLength()) {
-                    System.out.println(AStar.getPath().getLength() + " et " + Bel.getPath().getLength() + "\n");
+                } else if (dij.getPath().getLength() != Bel.getPath().getLength()) {
+                    System.out.println(dij.getPath().getLength() + " et " + Bel.getPath().getLength() + "\n");
+                    result = false;
+                    break;
+                } else if (dij.getPath().getLength() != Bel.getPath().getLength()) {
+                    System.out.println(dij.getPath().getMinimumTravelTime() + " et "
+                            + Bel.getPath().getMinimumTravelTime() + "\n");
                     result = false;
                     break;
                 }
@@ -96,9 +98,46 @@ public class Launch {
 
         }
         if (result) {
-            System.out.println("Fonctionnel\n ");
+            System.out.println("Dijkstra fonctionnel\n ");
         } else {
-            System.out.println("Erreur\n ");
+            System.out.println("Erreur Dijsktra\n ");
+        }
+
+        result = true;
+        for (int i = 0; i < 50; i++) {
+            Node node1 = graph.get((int) (Math.random() * 150 + 50));
+            Node node2 = graph.get((int) (Math.random() * 150 + 50));
+            ShortestPathData data = new ShortestPathData(graph, node1, node2,
+                    ArcInspectorFactory.getAllFilters().get(4));
+            BellmanFordAlgorithm algoB = new BellmanFordAlgorithm(data);
+            AStarAlgorithm algoC = new AStarAlgorithm(data);
+            ShortestPathSolution Bel;
+            ShortestPathSolution AStar;
+            try {
+                Bel = algoB.run();
+                AStar = algoC.run();
+                if (AStar.getStatus() == Status.INFEASIBLE && Bel.getStatus() != Status.INFEASIBLE) {
+                    result = false;
+                    break;
+                } else if (AStar.getPath().getLength() != Bel.getPath().getLength()) {
+                    System.out.println(AStar.getPath().getLength() + " et " + Bel.getPath().getLength() + "\n");
+                    result = false;
+                    break;
+                } else if (AStar.getPath().getLength() != Bel.getPath().getLength()) {
+                    System.out.println(AStar.getPath().getMinimumTravelTime() + " et "
+                            + Bel.getPath().getMinimumTravelTime() + "\n");
+                    result = false;
+                    break;
+                }
+            } catch (NullPointerException e) {
+                continue;
+            }
+
+        }
+        if (result) {
+            System.out.println("A* fonctionnel\n ");
+        } else {
+            System.out.println("Erreur A*\n ");
         }
 
         // Create the drawing:
