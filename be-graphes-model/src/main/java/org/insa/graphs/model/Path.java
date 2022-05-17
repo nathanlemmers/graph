@@ -60,8 +60,6 @@ public class Path {
             arcs.add(bestArc);
 
         }
-        // TODO:
-
         return new Path(graph, arcs);
     }
 
@@ -108,8 +106,6 @@ public class Path {
             arcs.add(bestArc);
 
         }
-        // TODO:
-
         return new Path(graph, arcs);
     }
 

@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import org.insa.graphs.algorithm.ArcInspectorFactory;
 import org.insa.graphs.algorithm.AbstractSolution.Status;
+import org.insa.graphs.algorithm.shortestpath.AStarAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.BellmanFordAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathData;
@@ -65,21 +66,39 @@ public class Launch {
         final Graph graph = reader.read();
 
         // test1 ;
-        Node node1 = graph.get(283);
-        Node node2 = graph.get(127);
-        ShortestPathData data = new ShortestPathData(graph, node1, node2, ArcInspectorFactory.getAllFilters().get(4));
-        DijkstraAlgorithm algo = new DijkstraAlgorithm(data);
-        BellmanFordAlgorithm algoB = new BellmanFordAlgorithm(data);
-        ShortestPathSolution dij = algo.run();
-        ShortestPathSolution Bel = algoB.run();
-        if (dij.getStatus() == Status.INFEASIBLE && Bel.getStatus() == Status.INFEASIBLE) {
-            System.out.println("Super ! Les deux sont infaisable");
-        } else if (dij.getPath().getMinimumTravelTime() == Bel.getPath().getMinimumTravelTime()) {
-            System.out.println("Bien joué ! ça marche ! " + algo.getRun().getPath().getMinimumTravelTime()
-                    + "\n" + algoB.getRun().getPath().getMinimumTravelTime() + "\n");
+        boolean result = true;
+        for (int i = 0; i < 5; i++) {
+            Node node1 = graph.get((int) (Math.random() * 150 + 50));
+            Node node2 = graph.get((int) (Math.random() * 150 + 50));
+            ShortestPathData data = new ShortestPathData(graph, node1, node2,
+                    ArcInspectorFactory.getAllFilters().get(4));
+            DijkstraAlgorithm algo = new DijkstraAlgorithm(data);
+            BellmanFordAlgorithm algoB = new BellmanFordAlgorithm(data);
+            AStarAlgorithm algoC = new AStarAlgorithm(data);
+            ShortestPathSolution dij;
+            ShortestPathSolution Bel;
+            ShortestPathSolution AStar;
+            try {
+                dij = algo.run();
+                Bel = algoB.run();
+                AStar = algoC.run();
+                if (AStar.getStatus() == Status.INFEASIBLE && Bel.getStatus() != Status.INFEASIBLE) {
+                    result = false;
+                    break;
+                } else if (dij.getPath().getLength() != dij.getPath().getLength()) {
+                    System.out.println(AStar.getPath().getLength() + " et " + Bel.getPath().getLength() + "\n");
+                    result = false;
+                    break;
+                }
+            } catch (NullPointerException e) {
+                continue;
+            }
+
+        }
+        if (result) {
+            System.out.println("Fonctionnel\n ");
         } else {
-            System.out.println("Non... ! " + algo.getRun().getPath().getMinimumTravelTime() + "\n"
-                    + algoB.getRun().getPath().getMinimumTravelTime());
+            System.out.println("Erreur\n ");
         }
 
         // Create the drawing:

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.insa.graphs.algorithm.AbstractInputData.Mode;
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Arc;
@@ -35,6 +36,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                 tas.insert(tabLabel.get(i));
             } else {
                 tabLabel.add(new LabelStar(i, false, Float.POSITIVE_INFINITY, null, this.getVol(tabNode.get(i), fin)));
+
             }
         }
     }
