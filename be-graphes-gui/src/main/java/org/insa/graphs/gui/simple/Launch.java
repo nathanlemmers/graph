@@ -67,7 +67,7 @@ public class Launch {
 
         // test1 ;
         boolean result = true;
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             Node node1 = graph.get((int) (Math.random() * 150 + 50));
             Node node2 = graph.get((int) (Math.random() * 150 + 50));
             ShortestPathData data = new ShortestPathData(graph, node1, node2,
@@ -86,7 +86,7 @@ public class Launch {
                     System.out.println(dij.getPath().getLength() + " et " + Bel.getPath().getLength() + "\n");
                     result = false;
                     break;
-                } else if (dij.getPath().getLength() != Bel.getPath().getLength()) {
+                } else if (dij.getPath().getMinimumTravelTime() != Bel.getPath().getMinimumTravelTime()) {
                     System.out.println(dij.getPath().getMinimumTravelTime() + " et "
                             + Bel.getPath().getMinimumTravelTime() + "\n");
                     result = false;
@@ -104,7 +104,7 @@ public class Launch {
         }
 
         result = true;
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             Node node1 = graph.get((int) (Math.random() * 150 + 50));
             Node node2 = graph.get((int) (Math.random() * 150 + 50));
             ShortestPathData data = new ShortestPathData(graph, node1, node2,

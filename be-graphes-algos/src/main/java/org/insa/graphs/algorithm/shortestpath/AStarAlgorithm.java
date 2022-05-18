@@ -28,17 +28,14 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         return (float) a;
     }
 
+    int t;
+
     @Override
     protected void init() {
-        if (graph.getGraphInformation().getMaximumSpeed() > 0) {
-            int t = graph.getGraphInformation().getMaximumSpeed();
-        } else {
-            int t = 55;
-        }
         for (int i = 0; i < nbNodes; i++) {
             if (tabNode.get(i).compareTo(depart) == 0) {
                 if (data.getMode() == Mode.TIME) {
-                    tabLabel.add(new LabelStar(i, true, 0, null, (this.getVol(tabNode.get(i), fin) / 2)));
+                    tabLabel.add(new LabelStar(i, true, 0, null, (this.getVol(tabNode.get(i), fin) / 13)));
                 } else {
                     tabLabel.add(new LabelStar(i, true, 0, null, this.getVol(tabNode.get(i), fin)));
                 }
@@ -46,7 +43,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             } else {
                 if (data.getMode() == Mode.TIME) {
                     tabLabel.add(new LabelStar(i, false, Float.POSITIVE_INFINITY, null,
-                            (this.getVol(tabNode.get(i), fin) / 2)));
+                            (this.getVol(tabNode.get(i), fin) / 13)));
                 } else {
                     tabLabel.add(
                             new LabelStar(i, false, Float.POSITIVE_INFINITY, null, this.getVol(tabNode.get(i), fin)));
